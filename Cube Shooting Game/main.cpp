@@ -35,7 +35,6 @@ int main(int argc, char* argv[]) {
 	renderer = SDL_CreateRenderer(window, -1, 0);
 	SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
 	SDL_RenderClear(renderer);
-	SDL_RenderPresent(renderer);
 
 	bool loop = true;
 
@@ -45,8 +44,43 @@ int main(int argc, char* argv[]) {
 			switch (e.type) {
 			case SDL_QUIT:
 				loop = false;
+				break;
+			case SDL_KEYDOWN:
+				switch (e.key.keysym.sym) {
+				case SDLK_UP:
+					RedQuad.y -= 10;
+					break;
+				case SDLK_DOWN:
+					RedQuad.y += 10;
+					break;
+				case SDLK_LEFT:
+					RedQuad.x -= 10;
+					break;
+				case SDLK_RIGHT:
+					RedQuad.x += 10;
+					break;
+				case SDLK_RIGHT && SDLK_UP:
+					RedQuad.x += 10;
+					RedQuad.y -= 10;
+				}
+				break;
 			}
 		}
+
+		//Print Red Quad
+		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+		SDL_RenderFillRect(renderer, &RedQuad);
+		
+		//Print Green Quad
+		/*SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+		SDL_RenderFillRect(renderer, &GreenQuad);*/
+
+		SDL_RenderPresent(renderer);
+
+		//Clean Screen
+		SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+		SDL_RenderClear(renderer);
+
 			
 	}
 
