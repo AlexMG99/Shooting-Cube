@@ -13,7 +13,11 @@
 
 ## v0.3
 +add KeyBoardInput:
+
 	* UP: Up Arrow
+	
 	* DOWN: Down Arrow
+	
 	* LEFT: Left Arrow
+	
 	* RIGHT: Right Arrow
