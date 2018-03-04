@@ -33,13 +33,13 @@ int main(int argc, char* argv[]) {
 
 	//Print blue blackground
 	renderer = SDL_CreateRenderer(window, -1, 0);
-	SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+	SDL_SetRenderDrawColor(renderer, 0, 122, 255, 255);
 	SDL_RenderClear(renderer);
 
 	bool loop = true;
 	bool BulletExist = false;
 
-	while(loop) {
+	while (loop) {
 		SDL_Event e;
 		if (SDL_PollEvent(&e) != 0) {
 			switch (e.type) {
@@ -62,8 +62,11 @@ int main(int argc, char* argv[]) {
 					break;
 				case SDLK_SPACE:
 					BulletExist = true;
-						GreenQuad.x = (RedQuad.x) + 80;
-						GreenQuad.y = (RedQuad.y) + 30;
+					GreenQuad.x = (RedQuad.x) + 80;
+					GreenQuad.y = (RedQuad.y) + 30;
+					break;
+				case SDLK_ESCAPE:
+					loop = false;
 					break;
 				}
 				break;
@@ -85,12 +88,12 @@ int main(int argc, char* argv[]) {
 		}
 
 		//Print Red Quad
-		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+		SDL_SetRenderDrawColor(renderer, 255, 10, 50, 255);
 		SDL_RenderFillRect(renderer, &RedQuad);
-		
+
 		//Print Green Quad
 		if (BulletExist) {
-			SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+			SDL_SetRenderDrawColor(renderer, 255, 255, 51, 255);
 			SDL_RenderFillRect(renderer, &GreenQuad);
 			GreenQuad.x += 10;
 			SDL_Delay(10);
@@ -102,10 +105,10 @@ int main(int argc, char* argv[]) {
 		SDL_RenderPresent(renderer);
 
 		//Clean Screen
-		SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+		SDL_SetRenderDrawColor(renderer, 0, 122, 255, 255);
 		SDL_RenderClear(renderer);
 
-			
+
 	}
 
 	SDL_DestroyWindow(window);

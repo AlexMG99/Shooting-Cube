@@ -2,17 +2,17 @@
 ## v0.1
 +configure SDL libraries
 
-+add "Hello World Code"
++added "Hello World Code"
 
 ## v0.2
 -remove "Hello World Code"
 
-+add "Print Blue Screen Code"
++added "Print Blue Screen Code"
 
-+add quit option
++added quit option
 
 ## v0.3
-+add KeyBoardInput:
++added KeyBoardInput:
 
 	* UP: Up Arrow
 	
@@ -23,7 +23,13 @@
 	* RIGHT: Right Arrow
 
 ## v0.4
-+add Screen Borders
-+add KeyBoardInput:
++added Screen Borders
++added KeyBoardInput:
 
 	* SHOT: Space
+
+## v0.45
++changed Colors
++added KeyBoardInput:
+
+	*QUIT: Esc
