@@ -21,3 +21,9 @@
 	* LEFT: Left Arrow
 	
 	* RIGHT: Right Arrow
+
+## v0.4
++add Screen Borders
++add KeyBoardInput:
+
+	* SHOT: Space
