@@ -154,21 +154,21 @@ int main(int argc, char* argv[]) {
 				SDL_RenderFillRect(renderer, &GreenQuad[a]);
 				GreenQuad[a].x += 10;
 			}
-			SDL_Delay(10);
+			
 		}
 
 		//Movement
 		if (moveUp == true) {
-			RedQuad.y -= 1;
+			RedQuad.y -= 5;
 		}
 		if (moveDown == true) {
-			RedQuad.y += 1;
+			RedQuad.y += 5;
 		}
 		if (moveLeft == true) {
-			RedQuad.x -= 1;
+			RedQuad.x -= 5;
 		}
 		if (moveRight == true) {
-			RedQuad.x += 1;
+			RedQuad.x += 5;
 		}
 
 		SDL_RenderPresent(renderer);
@@ -177,7 +177,7 @@ int main(int argc, char* argv[]) {
 		SDL_SetRenderDrawColor(renderer, 0, 122, 255, 255);
 		SDL_RenderClear(renderer);
 
-
+		SDL_Delay(10);
 	}
 
 	SDL_DestroyWindow(window);
