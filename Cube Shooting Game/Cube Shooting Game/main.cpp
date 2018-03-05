@@ -25,53 +25,109 @@ int main(int argc, char* argv[]) {
 	RedQuad.h = 80;
 
 	//Define Green Quad
-	SDL_Rect GreenQuad;
-	GreenQuad.x = (RedQuad.x) + 80;
-	GreenQuad.y = (RedQuad.y) + 30;
-	GreenQuad.w = 30;
-	GreenQuad.h = 10;
+	SDL_Rect GreenQuad[5];
+	for (int a = 0; a < 5; a++) {
+		GreenQuad[a].x = NULL;
+		GreenQuad[a].y = NULL;
+		GreenQuad[a].w = NULL;
+		GreenQuad[a].h = NULL;
+	}
+	
 
 	//Print blue blackground
 	renderer = SDL_CreateRenderer(window, -1, 0);
 	SDL_SetRenderDrawColor(renderer, 0, 122, 255, 255);
 	SDL_RenderClear(renderer);
 
+	int numBullet = 0;
 	bool loop = true;
 	bool BulletExist = false;
+	bool moveUp = false;
+	bool moveDown = false;
+	bool moveRight = false;
+	bool moveLeft = false;
 
 	while (loop) {
 		SDL_Event e;
 		if (SDL_PollEvent(&e) != 0) {
-			switch (e.type) {
-			case SDL_QUIT: //Quit program
-				loop = false;
-				break;
-			case SDL_KEYDOWN: //Movement & Attack
-				switch (e.key.keysym.sym) {
-				case SDLK_UP:
-					RedQuad.y -= 10;
-					break;
-				case SDLK_DOWN:
-					RedQuad.y += 10;
-					break;
-				case SDLK_LEFT:
-					RedQuad.x -= 10;
-					break;
-				case SDLK_RIGHT:
-					RedQuad.x += 10;
-					break;
-				case SDLK_SPACE:
-					BulletExist = true;
-					GreenQuad.x = (RedQuad.x) + 80;
-					GreenQuad.y = (RedQuad.y) + 30;
-					break;
-				case SDLK_ESCAPE:
+				if (e.type == SDL_QUIT){ //Quit program
 					loop = false;
-					break;
 				}
-				break;
-			}
-		}
+				if (e.type == SDL_KEYDOWN) {//Movement & Attack
+					if (e.key.keysym.sym == SDLK_UP) {
+						moveUp = true;
+					}
+					if (e.key.keysym.sym == SDLK_DOWN) {
+						moveDown = true;
+					}
+					if (e.key.keysym.sym == SDLK_LEFT) {
+						moveLeft = true;
+					}
+					if (e.key.keysym.sym == SDLK_RIGHT) {
+						moveRight = true;
+					}
+					if (e.key.keysym.sym == SDLK_SPACE) {
+						BulletExist = true;
+						//5 Bullets
+						switch (numBullet) {
+						case 0:
+							GreenQuad[0].x = (RedQuad.x) + 80;
+							GreenQuad[0].y = (RedQuad.y) + 30;
+							GreenQuad[0].w = 30;
+							GreenQuad[0].h = 10;
+							numBullet++;
+							break;
+						case 1:
+							GreenQuad[1].x = (RedQuad.x) + 80;
+							GreenQuad[1].y = (RedQuad.y) + 30;
+							GreenQuad[1].w = 30;
+							GreenQuad[1].h = 10;
+							numBullet++;
+							break;
+						case 2:
+							GreenQuad[2].x = (RedQuad.x) + 80;
+							GreenQuad[2].y = (RedQuad.y) + 30;
+							GreenQuad[2].w = 30;
+							GreenQuad[2].h = 10;
+							numBullet++;
+							break;
+						case 3:
+							GreenQuad[3].x = (RedQuad.x) + 80;
+							GreenQuad[3].y = (RedQuad.y) + 30;
+							GreenQuad[3].w = 30;
+							GreenQuad[3].h = 10;
+							numBullet++;
+							break;
+						case 4:
+							GreenQuad[4].x = (RedQuad.x) + 80;
+							GreenQuad[4].y = (RedQuad.y) + 30;
+							GreenQuad[4].w = 30;
+							GreenQuad[4].h = 10;
+							numBullet = 0;
+							break;
+						}
+					}
+						if (e.key.keysym.sym == SDLK_ESCAPE) {
+							loop = false;
+						}
+					}
+				if (e.type == SDL_KEYUP) {
+					if (e.key.keysym.sym == SDLK_UP) {
+						moveUp = false;
+					}
+					if (e.key.keysym.sym == SDLK_DOWN) {
+						moveDown = false;
+					}
+					if (e.key.keysym.sym == SDLK_LEFT) {
+						moveLeft = false;
+					}
+					if (e.key.keysym.sym == SDLK_RIGHT) {
+						moveRight = false;
+					}
+				}
+				}
+				
+		
 
 		//Set Borders
 		if (RedQuad.x < 0) {
@@ -83,7 +139,7 @@ int main(int argc, char* argv[]) {
 		if (RedQuad.y < 0) {
 			RedQuad.y = 0;
 		}
-		if (RedQuad.y == 410) {
+		if (RedQuad.y > 400) {
 			RedQuad.y = 400;
 		}
 
@@ -93,13 +149,26 @@ int main(int argc, char* argv[]) {
 
 		//Print Green Quad
 		if (BulletExist) {
-			SDL_SetRenderDrawColor(renderer, 255, 255, 51, 255);
-			SDL_RenderFillRect(renderer, &GreenQuad);
-			GreenQuad.x += 10;
-			SDL_Delay(10);
-			if (GreenQuad.x > 630) {
-				BulletExist = false;
+			for (int a = 0; a < 5; a++) {
+				SDL_SetRenderDrawColor(renderer, 255, 255, 51, 255);
+				SDL_RenderFillRect(renderer, &GreenQuad[a]);
+				GreenQuad[a].x += 10;
 			}
+			SDL_Delay(10);
+		}
+
+		//Movement
+		if (moveUp == true) {
+			RedQuad.y -= 1;
+		}
+		if (moveDown == true) {
+			RedQuad.y += 1;
+		}
+		if (moveLeft == true) {
+			RedQuad.x -= 1;
+		}
+		if (moveRight == true) {
+			RedQuad.x += 1;
 		}
 
 		SDL_RenderPresent(renderer);
