@@ -24,12 +24,19 @@
 
 ## v0.4
 +added Screen Borders
+
 +added KeyBoardInput:
 
 	* SHOT: Space
 
 ## v0.45
 +changed Colors
+
 +added KeyBoardInput:
 
 	*QUIT: Esc
+	
+## v0.5
++added New Diagonal Movement
+
++added 5 Bullets
