@@ -1,15 +1,17 @@
 #include "../SDL/include/SDL.h"
+#include "../SDL_Image/include/SDL_image.h"
 
 #pragma comment(lib, "../SDL/libx86/SDL2.lib")
 #pragma comment(lib, "../SDL/libx86/SDL2main.lib")
+#pragma comment(lib, "../SDL_Image/libx86/SDL2_image.lib")
 
 const int WINDOW_WIDTH = 640;
 const int WINDOW_HEIGHT = 480;
 
 int main(int argc, char* argv[]) {
 	//Initialize window and renderer
-	SDL_Window* window = NULL;
-	SDL_Renderer* renderer = NULL;
+	SDL_Window* window;
+	SDL_Renderer* renderer;
 
 	//Initialize SDL
 	SDL_Init(SDL_INIT_VIDEO);
@@ -25,12 +27,12 @@ int main(int argc, char* argv[]) {
 	RedQuad.h = 80;
 
 	//Define Green Quad
-	SDL_Rect GreenQuad[5];
+	SDL_Rect Bullet[5];
 	for (int a = 0; a < 5; a++) {
-		GreenQuad[a].x = NULL;
-		GreenQuad[a].y = NULL;
-		GreenQuad[a].w = NULL;
-		GreenQuad[a].h = NULL;
+		Bullet[a].x;
+		Bullet[a].y;
+		Bullet[a].w = 30;
+		Bullet[a].h = 10;
 	}
 	
 
@@ -41,11 +43,11 @@ int main(int argc, char* argv[]) {
 
 	int numBullet = 0;
 	bool loop = true;
-	bool BulletExist = false;
 	bool moveUp = false;
 	bool moveDown = false;
 	bool moveRight = false;
 	bool moveLeft = false;
+	bool bulletExist = false;
 
 	while (loop) {
 		SDL_Event e;
@@ -67,45 +69,12 @@ int main(int argc, char* argv[]) {
 						moveRight = true;
 					}
 					if (e.key.keysym.sym == SDLK_SPACE) {
-						BulletExist = true;
-						//5 Bullets
-						switch (numBullet) {
-						case 0:
-							GreenQuad[0].x = (RedQuad.x) + 80;
-							GreenQuad[0].y = (RedQuad.y) + 30;
-							GreenQuad[0].w = 30;
-							GreenQuad[0].h = 10;
+							Bullet[numBullet].x = (RedQuad.x) + (RedQuad.w);
+							Bullet[numBullet].y = (RedQuad.y)+((RedQuad.h)/2-Bullet->h);
 							numBullet++;
-							break;
-						case 1:
-							GreenQuad[1].x = (RedQuad.x) + 80;
-							GreenQuad[1].y = (RedQuad.y) + 30;
-							GreenQuad[1].w = 30;
-							GreenQuad[1].h = 10;
-							numBullet++;
-							break;
-						case 2:
-							GreenQuad[2].x = (RedQuad.x) + 80;
-							GreenQuad[2].y = (RedQuad.y) + 30;
-							GreenQuad[2].w = 30;
-							GreenQuad[2].h = 10;
-							numBullet++;
-							break;
-						case 3:
-							GreenQuad[3].x = (RedQuad.x) + 80;
-							GreenQuad[3].y = (RedQuad.y) + 30;
-							GreenQuad[3].w = 30;
-							GreenQuad[3].h = 10;
-							numBullet++;
-							break;
-						case 4:
-							GreenQuad[4].x = (RedQuad.x) + 80;
-							GreenQuad[4].y = (RedQuad.y) + 30;
-							GreenQuad[4].w = 30;
-							GreenQuad[4].h = 10;
-							numBullet = 0;
-							break;
-						}
+							if (numBullet == 5) {
+								numBullet = 0;
+							}
 					}
 						if (e.key.keysym.sym == SDLK_ESCAPE) {
 							loop = false;
@@ -133,14 +102,14 @@ int main(int argc, char* argv[]) {
 		if (RedQuad.x < 0) {
 			RedQuad.x = 0;
 		}
-		if (RedQuad.x == 570) {
-			RedQuad.x = 560;
+		if (RedQuad.x > WINDOW_WIDTH-RedQuad.w ) {
+			RedQuad.x = WINDOW_WIDTH - RedQuad.w;
 		}
 		if (RedQuad.y < 0) {
 			RedQuad.y = 0;
 		}
-		if (RedQuad.y > 400) {
-			RedQuad.y = 400;
+		if (RedQuad.y > WINDOW_HEIGHT-RedQuad.h) {
+			RedQuad.y = WINDOW_HEIGHT - RedQuad.h;
 		}
 
 		//Print Red Quad
@@ -148,13 +117,10 @@ int main(int argc, char* argv[]) {
 		SDL_RenderFillRect(renderer, &RedQuad);
 
 		//Print Green Quad
-		if (BulletExist) {
-			for (int a = 0; a < 5; a++) {
-				SDL_SetRenderDrawColor(renderer, 255, 255, 51, 255);
-				SDL_RenderFillRect(renderer, &GreenQuad[a]);
-				GreenQuad[a].x += 10;
-			}
-			
+		for (int a = 0; a < 5; a++) {
+			SDL_SetRenderDrawColor(renderer, 255, 255, 51, 255);
+			SDL_RenderFillRect(renderer, &Bullet[a]);
+			Bullet[a].x += 10;
 		}
 
 		//Movement
