@@ -45,3 +45,6 @@
 +added PNG Files for Background, Player & Bullets
 
 -removed Red Square, Green Square & Blue Blackground
+
+## v0.7
++added OGG and WAV files for shot fx and music

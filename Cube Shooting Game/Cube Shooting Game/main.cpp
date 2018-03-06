@@ -18,6 +18,8 @@ SDL_Renderer* renderer;
 SDL_Texture* background;
 SDL_Texture* ship;
 SDL_Texture* bullet;
+Mix_Music *music;
+Mix_Chunk *shot;
 
 //Texture Function
 SDL_Texture* loadTexture(std::string path) {
@@ -43,6 +45,8 @@ int main(int argc, char* argv[]) {
 	//Initialize SDL
 	SDL_Init(SDL_INIT_VIDEO);
 	IMG_Init(IMG_INIT_PNG);
+	Mix_Init(MIX_INIT_OGG);
+	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
 	//Create window & Renderer
 	window = SDL_CreateWindow("Shooting Cube Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
@@ -69,6 +73,11 @@ int main(int argc, char* argv[]) {
 	background = loadTexture("Background.png");
 	ship = loadTexture("ship.png");
 	bullet = loadTexture("bullet.png");
+
+	music = Mix_LoadMUS("music.ogg");
+	shot = Mix_LoadWAV("meow.wav");
+
+	Mix_PlayMusic(music, 1);
 
 	while (loop) {
 		SDL_Event e;
@@ -147,6 +156,7 @@ int main(int argc, char* argv[]) {
 		if (bulletExist) {
 			Bullet_Surface[numBullet]->x = (Ship_Surface->x) + (Ship_Surface->w);
 			Bullet_Surface[numBullet]->y = (Ship_Surface->y) + ((Ship_Surface->h) / 2 - Bullet_Surface[1]->h);
+			Mix_PlayChannel(-1, shot, 0);
 			numBullet++;
 			if (numBullet == 5) {
 				numBullet = 0;
@@ -172,11 +182,14 @@ int main(int argc, char* argv[]) {
 		SDL_Delay(10);
 	}
 
+	Mix_FreeChunk(shot);
+	Mix_FreeMusic(music);
 	SDL_DestroyTexture(background);
 	SDL_DestroyTexture(bullet);
 	SDL_DestroyTexture(ship);
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
+	Mix_Quit();
 	IMG_Quit();
 	SDL_Quit();
 	return 0;
