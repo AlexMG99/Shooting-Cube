@@ -40,3 +40,8 @@
 +added New Diagonal Movement
 
 +added 5 Bullets
+
+## v0.6
++added PNG Files for Background, Player & Bullets
+
+-removed Red Square, Green Square & Blue Blackground
