@@ -1,46 +1,35 @@
 #include "../SDL/include/SDL.h"
 #include "../SDL_Image/include/SDL_image.h"
+#include <iostream>
 
 #pragma comment(lib, "../SDL/libx86/SDL2.lib")
 #pragma comment(lib, "../SDL/libx86/SDL2main.lib")
 #pragma comment(lib, "../SDL_Image/libx86/SDL2_image.lib")
 
-const int WINDOW_WIDTH = 640;
-const int WINDOW_HEIGHT = 480;
+//Define
+
+const int WINDOW_WIDTH = 1280;
+const int WINDOW_HEIGHT = 720;
+
+SDL_Window* window;
+SDL_Renderer* renderer;
+SDL_Texture* background;
+SDL_Texture* ship;
+SDL_Texture* bullet;
+
+//Texture Function
+SDL_Texture* loadTexture(std::string path) {
+	//Create Texture
+	SDL_Texture* newTexture;
+	//Surface where it loads
+	SDL_Surface* loadSurface = IMG_Load(path.c_str());
+	newTexture = SDL_CreateTextureFromSurface(renderer, loadSurface);
+	SDL_FreeSurface(loadSurface);
+	return newTexture;
+}
 
 int main(int argc, char* argv[]) {
-	//Initialize window and renderer
-	SDL_Window* window;
-	SDL_Renderer* renderer;
-
-	//Initialize SDL
-	SDL_Init(SDL_INIT_VIDEO);
-
-	//Create window
-	window = SDL_CreateWindow("Shooting Cube Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
-
-	//Define Red Quad
-	SDL_Rect RedQuad;
-	RedQuad.x = 0;
-	RedQuad.y = 0;
-	RedQuad.w = 80;
-	RedQuad.h = 80;
-
-	//Define Green Quad
-	SDL_Rect Bullet[5];
-	for (int a = 0; a < 5; a++) {
-		Bullet[a].x;
-		Bullet[a].y;
-		Bullet[a].w = 30;
-		Bullet[a].h = 10;
-	}
 	
-
-	//Print blue blackground
-	renderer = SDL_CreateRenderer(window, -1, 0);
-	SDL_SetRenderDrawColor(renderer, 0, 122, 255, 255);
-	SDL_RenderClear(renderer);
-
 	int numBullet = 0;
 	bool loop = true;
 	bool moveUp = false;
@@ -48,6 +37,37 @@ int main(int argc, char* argv[]) {
 	bool moveRight = false;
 	bool moveLeft = false;
 	bool bulletExist = false;
+
+
+	//Initialize SDL
+	SDL_Init(SDL_INIT_VIDEO);
+	IMG_Init(IMG_INIT_PNG);
+
+	//Create window & Renderer
+	window = SDL_CreateWindow("Shooting Cube Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+	renderer = SDL_CreateRenderer(window, -1, 0);
+
+	//Define Player Surface
+	SDL_Rect* RedQuad = new SDL_Rect;
+	RedQuad->x = 0;
+	RedQuad->y = 0;
+	RedQuad->w = 123;
+	RedQuad->h = 60;
+
+	//Define Bullet Surface
+	SDL_Rect * Bullet[5];
+	for (int a = 0; a < 5; a++) {
+		Bullet[a] = new SDL_Rect;
+		Bullet[a]->x;
+		Bullet[a]->y;
+		Bullet[a]->w = 30;
+		Bullet[a]->h = 30;
+	}
+
+	//Load Textures
+	background = loadTexture("Background.png");
+	ship = loadTexture("ship.png");
+	bullet = loadTexture("bullet.png");
 
 	while (loop) {
 		SDL_Event e;
@@ -69,8 +89,8 @@ int main(int argc, char* argv[]) {
 						moveRight = true;
 					}
 					if (e.key.keysym.sym == SDLK_SPACE) {
-							Bullet[numBullet].x = (RedQuad.x) + (RedQuad.w);
-							Bullet[numBullet].y = (RedQuad.y)+((RedQuad.h)/2-Bullet->h);
+							Bullet[numBullet]->x = (RedQuad->x) + (RedQuad->w);
+							Bullet[numBullet]->y = (RedQuad->y)+((RedQuad->h)/2 - Bullet[1]->h);
 							numBullet++;
 							if (numBullet == 5) {
 								numBullet = 0;
@@ -99,54 +119,53 @@ int main(int argc, char* argv[]) {
 		
 
 		//Set Borders
-		if (RedQuad.x < 0) {
-			RedQuad.x = 0;
+		if (RedQuad->x < 0) {
+			RedQuad->x = 0;
 		}
-		if (RedQuad.x > WINDOW_WIDTH-RedQuad.w ) {
-			RedQuad.x = WINDOW_WIDTH - RedQuad.w;
+		if (RedQuad->x > WINDOW_WIDTH-RedQuad->w ) {
+			RedQuad->x = WINDOW_WIDTH - RedQuad->w;
 		}
-		if (RedQuad.y < 0) {
-			RedQuad.y = 0;
+		if (RedQuad->y < 0) {
+			RedQuad->y = 0;
 		}
-		if (RedQuad.y > WINDOW_HEIGHT-RedQuad.h) {
-			RedQuad.y = WINDOW_HEIGHT - RedQuad.h;
+		if (RedQuad->y > WINDOW_HEIGHT-RedQuad->h) {
+			RedQuad->y = WINDOW_HEIGHT - RedQuad->h;
 		}
 
-		//Print Red Quad
-		SDL_SetRenderDrawColor(renderer, 255, 10, 50, 255);
-		SDL_RenderFillRect(renderer, &RedQuad);
+		SDL_RenderCopy(renderer, background, 0, 0);
+		SDL_RenderCopy(renderer, ship, 0, RedQuad);
+
+		
 
 		//Print Green Quad
 		for (int a = 0; a < 5; a++) {
-			SDL_SetRenderDrawColor(renderer, 255, 255, 51, 255);
-			SDL_RenderFillRect(renderer, &Bullet[a]);
-			Bullet[a].x += 10;
+			SDL_RenderCopy(renderer, bullet, 0, Bullet[a]);
+			Bullet[a]->x += 10;
 		}
 
 		//Movement
 		if (moveUp == true) {
-			RedQuad.y -= 5;
+			RedQuad->y -= 5;
 		}
 		if (moveDown == true) {
-			RedQuad.y += 5;
+			RedQuad->y += 5;
 		}
 		if (moveLeft == true) {
-			RedQuad.x -= 5;
+			RedQuad->x -= 5;
 		}
 		if (moveRight == true) {
-			RedQuad.x += 5;
+			RedQuad->x += 5;
 		}
 
+	
+		
 		SDL_RenderPresent(renderer);
-
-		//Clean Screen
-		SDL_SetRenderDrawColor(renderer, 0, 122, 255, 255);
-		SDL_RenderClear(renderer);
-
 		SDL_Delay(10);
 	}
 
 	SDL_DestroyWindow(window);
+	IMG_Quit();
+	SDL_Quit();
 	return 0;
 
 }
